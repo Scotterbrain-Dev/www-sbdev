@@ -26,7 +26,7 @@ export default async function ShortcutsPage() {
           <h1 className="text-2xl font-bold">Keyboard Shortcuts & Commands</h1>
           <p className="text-muted-foreground">AI-generated shortcuts, commands, tips and tricks per app</p>
         </div>
-        <AgentRunButton agentId="keyboard-shortcuts" label="Generate Shortcuts" />
+        <AgentRunButton agentId="too-short" label="Generate Shortcuts" />
       </div>
 
       {apps.length === 0 ? (

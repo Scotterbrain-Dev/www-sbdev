@@ -32,7 +32,7 @@ export default async function BenchmarksPage() {
           <h1 className="text-2xl font-bold">Benchmarks</h1>
           <p className="text-muted-foreground">Intelligence, Coding & Agentic Index scores</p>
         </div>
-        <AgentRunButton agentId="openrouter" />
+        <AgentRunButton agentId="frank-router" />
       </div>
 
       {models.length === 0 ? (

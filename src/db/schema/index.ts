@@ -5,3 +5,4 @@ export * from "./openrouter";
 export * from "./changelogs";
 export * from "./articles";
 export * from "./claude-skills";
+export * from "./tracked-repos";

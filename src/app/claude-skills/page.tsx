@@ -27,7 +27,7 @@ export default async function ClaudeSkillsPage() {
           <h1 className="text-2xl font-bold">Claude Skills & Connectors</h1>
           <p className="text-muted-foreground">All Claude skills, agents, and connectors (updated 3x/week)</p>
         </div>
-        <AgentRunButton agentId="claude-skills" />
+        <AgentRunButton agentId="phil-skills" />
       </div>
 
       <Tabs defaultValue="skills">

@@ -10,9 +10,9 @@ import { ExternalLink } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 const REPOS = [
-  { slug: "claude-code-awesome", label: "Claude Code Awesome" },
-  { slug: "gemini-cli-awesome", label: "Gemini CLI Awesome" },
-  { slug: "mcp-awesome", label: "MCP Awesome" },
+  { slug: "hesreallyhim/awesome-claude-code", label: "Awesome Claude Code" },
+  { slug: "VoltAgent/awesome-agent-skills", label: "Awesome Agent Skills" },
+  { slug: "punkpeye/awesome-mcp-servers", label: "Awesome MCP Servers" },
 ];
 
 async function getEntries(slug: string) {
@@ -29,15 +29,15 @@ export default async function AwesomeReposPage() {
           <h1 className="text-2xl font-bold">Awesome Repos</h1>
           <p className="text-muted-foreground">New additions to Awesome lists</p>
         </div>
-        <AgentRunButton agentId="awesome-repos" />
+        <AgentRunButton agentId="gabby-gitrend" />
       </div>
 
-      <Tabs defaultValue={REPOS[0].slug}>
+      <Tabs defaultValue="tab-0">
         <TabsList>
-          {REPOS.map((r) => <TabsTrigger key={r.slug} value={r.slug}>{r.label}</TabsTrigger>)}
+          {REPOS.map((r, i) => <TabsTrigger key={r.slug} value={`tab-${i}`}>{r.label}</TabsTrigger>)}
         </TabsList>
         {REPOS.map((r, i) => (
-          <TabsContent key={r.slug} value={r.slug}>
+          <TabsContent key={r.slug} value={`tab-${i}`}>
             <EntryList entries={data[i]} />
           </TabsContent>
         ))}

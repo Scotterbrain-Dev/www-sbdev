@@ -14,9 +14,9 @@ const PRODUCTS = [
   { slug: "cursor", label: "Cursor" },
   { slug: "windsurf", label: "Windsurf" },
   { slug: "piecesos", label: "PiecesOS" },
-  { slug: "antigravity", label: "Antigravity" },
-  { slug: "openclaw", label: "OpenClaw" },
-  { slug: "nanoclaw", label: "NanoClaw" },
+  { slug: "aider", label: "Aider" },
+  { slug: "continue", label: "Continue" },
+  { slug: "zed", label: "Zed" },
 ];
 
 async function getChangelogs(product: string) {
@@ -38,7 +38,7 @@ export default async function ChangelogsPage() {
           <h1 className="text-2xl font-bold">Changelogs & News</h1>
           <p className="text-muted-foreground">Release notes and updates for dev tools</p>
         </div>
-        <AgentRunButton agentId="changelogs" />
+        <AgentRunButton agentId="lucy-change" />
       </div>
 
       <Tabs defaultValue="all">

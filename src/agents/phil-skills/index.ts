@@ -4,14 +4,14 @@ import { scrapeClaudeSkills } from "./scraper";
 import type { AgentModule } from "../types";
 
 export const claudeSkillsAgent: AgentModule = {
-  id: "claude-skills",
-  name: "Claude Skills & Connectors",
+  id: "phil-skills",
+  name: "Phil-Skills",
   description: "Fetches Claude skills, agents, and connectors from Anthropic (3x/week)",
   schedule: "0 9 * * 1,3,5", // Mon, Wed, Fri at 9am
 
-  async run({ db, log }) {
+  async run({ db, github, log }) {
     log.info("Scraping Claude skills and connectors...");
-    const items = await scrapeClaudeSkills();
+    const items = await scrapeClaudeSkills(github);
     log.info(`Found ${items.length} items`);
 
     let totalRows = 0;

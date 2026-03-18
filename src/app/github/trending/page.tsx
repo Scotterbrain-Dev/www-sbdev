@@ -32,7 +32,7 @@ export default async function GithubTrendingPage() {
           <h1 className="text-2xl font-bold">GitHub Trending</h1>
           <p className="text-muted-foreground">Latest trending repositories on GitHub</p>
         </div>
-        <AgentRunButton agentId="github-trending" />
+        <AgentRunButton agentId="gabby-gitrend" />
       </div>
 
       <Tabs defaultValue="daily">

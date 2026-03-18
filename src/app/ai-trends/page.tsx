@@ -18,7 +18,7 @@ export default async function AiTrendsPage() {
           <h1 className="text-2xl font-bold">AI Trends</h1>
           <p className="text-muted-foreground">Latest trends in AI, LLMs, and agentic coding</p>
         </div>
-        <AgentRunButton agentId="ai-trends" />
+        <AgentRunButton agentId="tony-trender" />
       </div>
 
       {trends.length === 0 ? (

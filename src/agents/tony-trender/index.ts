@@ -1,7 +1,7 @@
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { aiTrends } from "@/db/schema";
-import { AI_TREND_FEEDS } from "../ai-articles/feeds";
+import { AI_TREND_FEEDS } from "../arty-jotai/feeds";
 import type { AgentModule } from "../types";
 import { eq } from "drizzle-orm";
 
@@ -16,8 +16,8 @@ function relevanceScore(title: string, description: string = ""): number {
 }
 
 export const aiTrendsAgent: AgentModule = {
-  id: "ai-trends",
-  name: "AI Trends",
+  id: "tony-trender",
+  name: "Tony-Trender",
   description: "Tracks latest AI, LLM, and agentic coding trends from news sources",
   schedule: "0 */6 * * *", // every 6 hours
 

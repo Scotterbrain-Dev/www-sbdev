@@ -2,7 +2,8 @@ import { z } from "zod";
 
 const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
-  ANTHROPIC_API_KEY: z.string().default(""),
+  OPENROUTER_API_KEY: z.string().default(""),
+  ANTHROPIC_API_KEY: z.string().default(""), // optional, direct Anthropic bypass
   GITHUB_TOKEN: z.string().default(""),
   AGENT_SECRET: z.string().default("dev-secret-change-in-prod"),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),

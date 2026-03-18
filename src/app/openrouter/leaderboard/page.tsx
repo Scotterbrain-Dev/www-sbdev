@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { openrouterModels } from "@/db/schema";
-import { desc, eq, sql } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AgentRunButton } from "@/components/agents/agent-run-button";
@@ -35,7 +35,7 @@ export default async function LeaderboardPage() {
             {latest ? ` · Week of ${latest.week}` : ""}
           </p>
         </div>
-        <AgentRunButton agentId="openrouter" />
+        <AgentRunButton agentId="frank-router" />
       </div>
 
       {models.length === 0 ? (
@@ -50,6 +50,7 @@ export default async function LeaderboardPage() {
                   <TableHead>Model</TableHead>
                   <TableHead>Provider</TableHead>
                   <TableHead className="text-right">Context</TableHead>
+                  <TableHead className="text-right">Weekly Tokens</TableHead>
                   <TableHead className="text-right">Intelligence</TableHead>
                   <TableHead className="text-right">Coding</TableHead>
                   <TableHead className="text-right">Agentic</TableHead>
@@ -63,6 +64,13 @@ export default async function LeaderboardPage() {
                     <TableCell><Badge variant="outline" className="text-xs">{model.provider}</Badge></TableCell>
                     <TableCell className="text-right text-xs text-muted-foreground">
                       {model.contextLength ? `${(model.contextLength / 1000).toFixed(0)}K` : "—"}
+                    </TableCell>
+                    <TableCell className="text-right text-sm font-mono">
+                      {model.weeklyTokensB != null
+                        ? model.weeklyTokensB >= 1000
+                          ? `${(model.weeklyTokensB / 1000).toFixed(1)}T`
+                          : `${model.weeklyTokensB.toFixed(0)}B`
+                        : "—"}
                     </TableCell>
                     <TableCell className="text-right text-sm">{model.scoreIntelligence?.toFixed(1) ?? "—"}</TableCell>
                     <TableCell className="text-right text-sm">{model.scoreCoding?.toFixed(1) ?? "—"}</TableCell>

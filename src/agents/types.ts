@@ -1,10 +1,10 @@
 import type { DB } from "@/db";
-import type Anthropic from "@anthropic-ai/sdk";
+import type OpenAI from "openai";
 import type { Octokit } from "@octokit/rest";
 
 export interface AgentContext {
   db: DB;
-  anthropic: Anthropic;
+  ai: OpenAI; // OpenRouter client (Gemini via OpenAI-compatible API)
   github: Octokit;
   log: AgentLogger;
 }

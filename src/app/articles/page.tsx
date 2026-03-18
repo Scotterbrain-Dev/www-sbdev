@@ -33,7 +33,7 @@ export default async function ArticlesPage() {
           <h1 className="text-2xl font-bold">AI Articles</h1>
           <p className="text-muted-foreground">Funny, shocking, and interesting AI articles</p>
         </div>
-        <AgentRunButton agentId="ai-articles" />
+        <AgentRunButton agentId="arty-jotai" />
       </div>
 
       {articles.length === 0 ? (

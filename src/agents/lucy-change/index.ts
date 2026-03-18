@@ -1,9 +1,12 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import { XMLParser } from "fast-xml-parser";
 import { changelogs } from "@/db/schema";
 import { CHANGELOG_SOURCES, type ChangelogSource } from "./sources";
 import type { AgentModule } from "../types";
 import { Octokit } from "@octokit/rest";
+
+const xmlParser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
 
 async function scrapeHtmlChangelog(source: ChangelogSource) {
   const entries: Array<{
@@ -49,6 +52,50 @@ async function scrapeHtmlChangelog(source: ChangelogSource) {
   return entries;
 }
 
+async function fetchRssChangelog(source: ChangelogSource) {
+  const entries: Array<{
+    title: string;
+    contentMd: string;
+    url: string;
+    version: string | null;
+    publishedAt: Date | null;
+  }> = [];
+
+  try {
+    const { data } = await axios.get(source.url, {
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; sbdev-bot/1.0)" },
+      timeout: 15000,
+    });
+
+    const parsed = xmlParser.parse(data);
+    const channel = parsed?.rss?.channel ?? parsed?.feed;
+    const items = channel?.item ?? channel?.entry ?? [];
+    const itemList = (Array.isArray(items) ? items : [items]).slice(0, 20);
+
+    for (const item of itemList) {
+      const title = item.title ?? "Untitled";
+      const url = typeof item.link === "string" ? item.link : (item.link?.["@_href"] ?? item.guid ?? "");
+      if (!url) continue;
+
+      const pubDate = item.pubDate ?? item.published ?? item.updated;
+      const publishedAt = pubDate ? new Date(pubDate) : null;
+      const content = item.description ?? item.content ?? item.summary ?? "";
+
+      entries.push({
+        title: typeof title === "string" ? title : String(title),
+        contentMd: typeof content === "string" ? content.slice(0, 2000) : "",
+        url,
+        version: null,
+        publishedAt: publishedAt && !isNaN(publishedAt.getTime()) ? publishedAt : null,
+      });
+    }
+  } catch (err) {
+    console.warn(`[changelogs] Failed to fetch RSS for ${source.product}: ${err instanceof Error ? err.message : err}`);
+  }
+
+  return entries;
+}
+
 async function fetchGithubReleases(source: ChangelogSource, octokit: Octokit) {
   const entries: Array<{
     title: string;
@@ -82,9 +129,9 @@ async function fetchGithubReleases(source: ChangelogSource, octokit: Octokit) {
 }
 
 export const changelogsAgent: AgentModule = {
-  id: "changelogs",
-  name: "Changelogs & News",
-  description: "Fetches changelogs and release notes for Claude Code, Cursor, Windsurf, PiecesOS, Antigravity, OpenClaw, NanoClaw",
+  id: "lucy-change",
+  name: "Lucy-Change",
+  description: "Fetches changelogs and release notes for Claude Code, Cursor, Windsurf, PiecesOS, Aider, Continue, Zed",
   schedule: "0 */6 * * *", // every 6 hours
 
   async run({ db, github, log }) {
@@ -97,6 +144,8 @@ export const changelogsAgent: AgentModule = {
 
       if (source.type === "github-releases") {
         entries = await fetchGithubReleases(source, github);
+      } else if (source.type === "rss") {
+        entries = await fetchRssChangelog(source);
       } else {
         entries = await scrapeHtmlChangelog(source);
       }

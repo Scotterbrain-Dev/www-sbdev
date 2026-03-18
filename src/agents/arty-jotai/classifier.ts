@@ -1,4 +1,5 @@
-import type Anthropic from "@anthropic-ai/sdk";
+import type OpenAI from "openai";
+import { MODELS } from "@/lib/openrouter";
 
 export interface ClassificationResult {
   funnyScore: number;
@@ -11,7 +12,7 @@ const BATCH_SIZE = 10;
 
 export async function classifyArticles(
   articles: Array<{ title: string; description?: string }>,
-  anthropic: Anthropic
+  ai: OpenAI
 ): Promise<ClassificationResult[]> {
   const results: ClassificationResult[] = [];
 
@@ -29,19 +30,18 @@ ${batch.map((a, idx) => `${idx + 1}. "${a.title}"${a.description ? `: ${a.descri
 Return ONLY a JSON array with ${batch.length} objects, no other text.`;
 
     try {
-      const response = await anthropic.messages.create({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 1500,
+      const response = await ai.chat.completions.create({
+        model: MODELS.fast, // gemini-2.0-flash — cheapest for high-volume classification
         messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
       });
 
-      const content = response.content[0];
-      if (content.type !== "text") continue;
-
-      const parsed = JSON.parse(content.text.trim()) as ClassificationResult[];
+      const text = response.choices?.[0]?.message?.content?.trim() ?? "[]";
+      // Gemini may wrap in {"articles": [...]} or return array directly
+      const raw = JSON.parse(text);
+      const parsed: ClassificationResult[] = Array.isArray(raw) ? raw : (raw.articles ?? raw.results ?? []);
       results.push(...parsed);
     } catch {
-      // fallback: add neutral scores
       results.push(...batch.map(() => ({
         funnyScore: 0,
         shockScore: 0,

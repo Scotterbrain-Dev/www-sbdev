@@ -5,12 +5,12 @@ import { generateShortcuts } from "./generator";
 import type { AgentModule } from "../types";
 
 export const keyboardShortcutsAgent: AgentModule = {
-  id: "keyboard-shortcuts",
-  name: "Keyboard Shortcuts Generator",
-  description: "Uses Claude to generate and update keyboard shortcuts, commands, and tips for apps",
+  id: "too-short",
+  name: "Too-Short",
+  description: "Uses Gemini 2.5 Flash to generate and update keyboard shortcuts, commands, and tips for apps",
   schedule: "0 2 * * 0", // weekly Sunday at 2am
 
-  async run({ db, anthropic, log }) {
+  async run({ db, ai, log }) {
     // Ensure all apps exist in DB
     for (const app of APPS) {
       await db.insert(shortcutsApps).values({
@@ -47,7 +47,7 @@ export const keyboardShortcutsAgent: AgentModule = {
 
       for (const platform of platforms) {
         try {
-          const generated = await generateShortcuts(appConfig, platform, anthropic);
+          const generated = await generateShortcuts(appConfig, platform, ai);
           log.info(`Got ${generated.length} shortcuts for ${app.name}/${platform}`);
 
           for (const sc of generated) {

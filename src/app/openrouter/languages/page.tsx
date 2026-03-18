@@ -28,7 +28,7 @@ export default async function LanguagesPage() {
           <h1 className="text-2xl font-bold">Programming Language Scores</h1>
           <p className="text-muted-foreground">LLM coding scores per language from OpenRouter</p>
         </div>
-        <AgentRunButton agentId="openrouter" />
+        <AgentRunButton agentId="frank-router" />
       </div>
 
       {scores.length === 0 ? (

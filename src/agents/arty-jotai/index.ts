@@ -29,12 +29,12 @@ async function fetchFeed(url: string): Promise<RssItem[]> {
 }
 
 export const aiArticlesAgent: AgentModule = {
-  id: "ai-articles",
-  name: "AI Articles (Funny & Shocking)",
+  id: "arty-jotai",
+  name: "Arty-Jotai",
   description: "Fetches and classifies funny/shocking AI articles from RSS feeds",
   schedule: "0 */4 * * *", // every 4 hours
 
-  async run({ db, anthropic, log }) {
+  async run({ db, ai, log }) {
     let totalRows = 0;
     const newArticles: Array<{ title: string; url: string; source: string; author: string | null; publishedAt: Date | null; description?: string }> = [];
 
@@ -73,7 +73,7 @@ export const aiArticlesAgent: AgentModule = {
     log.info(`Classifying ${newArticles.length} new articles...`);
     const classifications = await classifyArticles(
       newArticles.map((a) => ({ title: a.title, description: a.description })),
-      anthropic
+      ai
     );
 
     for (let i = 0; i < newArticles.length; i++) {

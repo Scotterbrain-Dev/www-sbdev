@@ -25,7 +25,7 @@ export default async function FastestPage() {
           <h1 className="text-2xl font-bold">Fastest LLMs</h1>
           <p className="text-muted-foreground">Ranked by tokens per second</p>
         </div>
-        <AgentRunButton agentId="openrouter" />
+        <AgentRunButton agentId="frank-router" />
       </div>
 
       {withSpeed.length === 0 ? (

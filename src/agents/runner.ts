@@ -1,8 +1,8 @@
 import { db } from "@/db";
 import { agentRuns } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import Anthropic from "@anthropic-ai/sdk";
 import { Octokit } from "@octokit/rest";
+import { openrouter } from "@/lib/openrouter";
 import { env } from "@/lib/env";
 import type { AgentModule, AgentContext, AgentLogger } from "./types";
 
@@ -28,7 +28,7 @@ export async function runAgent(agent: AgentModule): Promise<void> {
 
   const ctx: AgentContext = {
     db,
-    anthropic: new Anthropic({ apiKey: env.ANTHROPIC_API_KEY }),
+    ai: openrouter,
     github: new Octokit({ auth: env.GITHUB_TOKEN }),
     log,
   };
