@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Sidebar } from "@/components/layout/sidebar";
-
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
+import "@fontsource/syne/400.css";
+import "@fontsource/syne/600.css";
+import "@fontsource/syne/700.css";
+import "@fontsource/syne/800.css";
+import "@fontsource/space-grotesk/300.css";
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
 
 export const metadata: Metadata = {
-  title: "SB Dev Dashboard",
-  description: "Personal AI-powered dev dashboard",
+  title: "Scotterbrain | Descatter Your Business",
+  description: "Master the tools to descatter and be promoted to an agent of the Scotterbrain Alliance",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${geistMono.variable} font-mono antialiased bg-background text-foreground`}>
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <main className="flex-1 overflow-auto">
-            {children}
-          </main>
-        </div>
+    <html lang="en">
+      <body className="antialiased">
+        {children}
       </body>
     </html>
   );
