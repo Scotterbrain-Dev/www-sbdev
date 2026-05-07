@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-  DATABASE_URL: z.string().min(1),
+  DATABASE_URL: z.string().default(""),
   OPENROUTER_API_KEY: z.string().default(""),
   ANTHROPIC_API_KEY: z.string().default(""), // optional, direct Anthropic bypass
   GITHUB_TOKEN: z.string().default(""),
